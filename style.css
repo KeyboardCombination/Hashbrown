@@ -1,0 +1,101 @@
+QMainWindow {
+    background-color: #191919;
+}
+
+QWidget {
+    background-color: #191919;
+    color: #fafafa;
+}
+
+QLabel {
+    color: #fafafa;
+}
+
+QCheckBox {
+    color: #fafafa;
+}
+
+QCheckBox::indicator {
+    background-color: #212121;
+    color: #fafafa;
+    border: 1px solid #424242;
+    border-radius: 4px;
+}
+
+QCheckBox::indicator:checked {
+    background-color: #FF5252;
+}
+
+QCheckBox::indicator:unchecked {
+    background-color: #212121;
+}
+
+QCheckBox::indicator:unchecked:hover {
+    background-color: #323232;
+}
+
+QPushButton {
+    background-color: #212121;
+    color: #fafafa;
+    border: 1px solid #424242;
+    border-radius: 4px;
+}
+
+QPushButton:hover {
+    background-color: #323232;
+}
+
+QLineEdit {
+    background-color: #212121;
+    color: #fafafa;
+    border: 1px solid #424242;
+    border-radius: 4px;
+}
+
+QLineEdit:read-only {
+    color: #757575;
+}
+
+QLineEdit:focus {
+    border: 1px solid #FF5252;
+}
+
+QSpinBox {
+    background-color: #212121;
+    color: #fafafa;
+    border: 1px solid #424242;
+    border-radius: 4px;
+}
+
+QComboBox {
+    background-color: #212121;
+    color: #fafafa;
+    border: 1px solid #424242;
+    border-radius: 4px;
+}
+
+QMenuBar {
+    background-color: #212121;
+}
+
+QMenuBar::item {
+    background-color: transparent;
+    color: #fafafa;
+}
+
+QMenuBar::item:selected {
+    background-color: #323232;
+    color: #fafafa;
+}
+
+QProgressBar {
+    background-color: #323232;
+    color: #fafafa;
+    border: 1px solid #424242;
+    border-radius: 4px;
+}
+
+QProgressBar::chunk {
+    background-color: #FF5252;
+    width: 16px;
+}
