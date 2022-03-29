@@ -305,7 +305,7 @@ class MainWidget(QtWidgets.QMainWindow):
         self.SettingsWidget.setWindowTitle("Settings")
         self.SettingsWidget.setWindowIcon(QtGui.QIcon('StudioIcon.png'))
         self.SettingsWidget.setFixedSize(640, 480)
-        self.SettingsWidget.setStyleSheet(open("style.css").read())
+        self.SettingsWidget.setStyleSheet(open("style/style.css").read())
 
         #Thumbnail resolution option
         ThumbnailSizeOptionText = QtWidgets.QLabel(self.SettingsWidget)
@@ -357,7 +357,7 @@ class MainWidget(QtWidgets.QMainWindow):
         self.AboutWidget = QtWidgets.QWidget()
         self.AboutWidget.setWindowTitle("About")
         self.AboutWidget.setFixedSize(256, 64)
-        self.AboutWidget.setStyleSheet(open("style.css").read())
+        self.AboutWidget.setStyleSheet(open("style/style.css").read())
 
         AboutText = QtWidgets.QLabel("KeyboardCombination 2022", alignment=QtCore.Qt.AlignCenter)
         AboutText.setGeometry(0, 0, 256, 64)
@@ -398,6 +398,6 @@ if (__name__ == "__main__"):
     Widget.resize(640, 480)
     Widget.show()
 
-    Widget.setStyleSheet(open("style.css").read())
+    Widget.setStyleSheet(open("style/style.css").read())
 
     sys.exit(HashbrownApp.exec())
