@@ -62,6 +62,10 @@ QLineEdit:focus {
     border: 1px solid #FF5252;
 }
 
+QLineEdit:disabled{
+    background-color: #323232;
+}
+
 QSpinBox {
     background-color: #212121;
     color: #fafafa;
@@ -69,11 +73,45 @@ QSpinBox {
     border-radius: 4px;
 }
 
+QSpinBox:disabled{
+    background-color: #323232;
+}
+
+QSpinBox::up-button {
+    border-left-width: 1px;
+    border-left-color: #424242;
+    border-left-style: solid; /* just a single line */
+
+    image: url(icon/UpArrow.png)
+}
+
+QSpinBox::down-button {
+    border-left-width: 1px;
+    border-left-color: #424242;
+    border-left-style: solid; /* just a single line */
+
+    image: url(icon/DownArrow.png)
+}
+
 QComboBox {
     background-color: #212121;
     color: #fafafa;
     border: 1px solid #424242;
     border-radius: 4px;
+}
+
+QComboBox::down-arrow {
+    width: 16px;
+    height: 100%;
+    image: url(icon/DownArrow.png);
+}
+QComboBox::drop-down {
+    /* subcontrol-origin: padding;
+    subcontrol-position: top right; */
+
+    border-left-width: 1px;
+    border-left-color: #424242;
+    border-left-style: solid; /* just a single line */
 }
 
 QMenuBar {

@@ -1,4 +1,4 @@
-# Hashbrown by KeyboardCombination 2022 (Test)
+# Hashbrown by KeyboardCombination 2022
 # Original downloader by Lannuked
 
 # Init:
@@ -130,13 +130,13 @@ class AssetDownloader(QtCore.QThread):
         print("Downloading " + AssetID + "...")
         Widget.ProgressBar.setMaximum(0)
         Widget.AssetInput.setEnabled(False)
+        Widget.VersionInput.setEnabled(False)
+        Widget.DownloadAllVersions.setEnabled(False)
         dlAsset = requests.get(f'{assetUrl}{AssetID}&version={VersionNumber}', headers = headersIn, stream=True)
         FileSize = dlAsset.headers["content-length"]
         BlockSize = 1024
 
         if (dlAsset.status_code != 200):
-            QtWidgets.QMessageBox.critical(MainWidget(), "Error!", "Download failed! Status code " + str(dlAsset.status_code))
-
             return dlAsset.status_code
 
         MetaData = AssetDownloader.DownloadMetadata(AssetID, dlAsset.headers)
@@ -215,6 +215,8 @@ class AssetDownloader(QtCore.QThread):
         
         Widget.ProgressBar.setMaximum(100)
         Widget.AssetInput.setEnabled(True)
+        Widget.VersionInput.setEnabled(True)
+        Widget.DownloadAllVersions.setEnabled(True)
 
     def DownloadAllAssets(versionNumber, WidgetMain):
         print(versionNumber)
@@ -226,7 +228,8 @@ class MainWidget(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Hashbrown")
-        self.setWindowIcon(QtGui.QIcon('StudioIcon.png'))
+        self.setWindowIcon(QtGui.QIcon('icon/StudioIcon.png'))
+        self.setFixedSize(640, 164)
 
         self.InitMainUI()
         self.MenubarInit()
@@ -235,31 +238,27 @@ class MainWidget(QtWidgets.QMainWindow):
 
     def InitMainUI(self):
         self.AssetInput = QtWidgets.QLineEdit(self)
-        self.AssetInput.setGeometry(4, 24, 128, 24)
-        self.AssetInput.setAlignment(QtCore.Qt.AlignHCenter)
+        self.AssetInput.setGeometry(224, 32, 192, 32)
+        self.AssetInput.setAlignment(QtCore.Qt.AlignCenter)
         self.AssetInput.setPlaceholderText("Insert Asset ID/Hash")
 
         self.VersionInput = QtWidgets.QSpinBox(self)
-        self.VersionInput.setMaximum(2048)
-        self.VersionInput.setGeometry(136, 24, 64, 24)
+        # self.VersionInput.setMaximum(2048)
+        self.VersionInput.setGeometry(420, 36, 80, 28)
 
         self.DownloadAllVersions = QtWidgets.QCheckBox(self)
         self.DownloadAllVersions.setText("Download all versions")
-        self.DownloadAllVersions.setGeometry(204, 24, 256, 24)
+        self.DownloadAllVersions.setGeometry(256, 64, 256, 24)
 
         self.DownloadAllVersions.clicked.connect(self.ToggleDownloadAllVersions)
 
         DownloadButton = QtWidgets.QPushButton("Download", self)
-        DownloadButton.setGeometry(4, 48, 96, 32)
+        DownloadButton.setGeometry(256, 96, 128, 32)
 
         DownloadButton.clicked.connect(self.InitializeDownload)
         
         self.ProgressBar = QtWidgets.QProgressBar(self)
-        self.ProgressBar.setGeometry(4, 104, 256, 24)
-
-        self.StatusLabel = QtWidgets.QLabel(self)
-        self.StatusLabel.setText("Ready.")
-        self.StatusLabel.setGeometry(4, 80, 128, 16)
+        self.ProgressBar.setGeometry(192, 132, 256, 24)
 
     # def UpdateProgressBar(self, value):
     #     self.ProgressBar.setValue(value)
@@ -269,6 +268,9 @@ class MainWidget(QtWidgets.QMainWindow):
 
     def InitializeDownload(self):
         # Widget.ProgressBar.setMaximum(0)
+        if (self.AssetInput.text() == ""):
+            QtWidgets.QMessageBox.critical(MainWidget(), "Error!", "Please enter an ID!")
+            return
 
         # self.AssetInput.setEnabled(False)
         if (self.DownloadAllVersions.isChecked()):
@@ -303,7 +305,7 @@ class MainWidget(QtWidgets.QMainWindow):
     def SettingsMenuInit(self):
         self.SettingsWidget = QtWidgets.QWidget()
         self.SettingsWidget.setWindowTitle("Settings")
-        self.SettingsWidget.setWindowIcon(QtGui.QIcon('StudioIcon.png'))
+        self.SettingsWidget.setWindowIcon(QtGui.QIcon('icon/StudioIcon.png'))
         self.SettingsWidget.setFixedSize(640, 480)
         self.SettingsWidget.setStyleSheet(open("style/style.css").read())
 
