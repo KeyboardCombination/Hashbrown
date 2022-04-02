@@ -1,4 +1,4 @@
-# Hashbrown by KeyboardCombination 2022
+# Hashbrown by KeyboardCombination 2022 (Test)
 # Original downloader by Lannuked
 
 # Init:
