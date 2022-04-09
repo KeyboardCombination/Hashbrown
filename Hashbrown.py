@@ -2,22 +2,22 @@
 # Original downloader by Lannuked
 
 # Init:
+from asyncio import Future
 import sys
-from tkinter import Menu
 from PySide6 import QtCore, QtWidgets, QtGui
-import PySide6
 import requests
 import re
 import os
 import time
 import json
-import threading
-import signal
+import concurrent.futures
 
 # Global Variables:
 headersIn = {'User-Agent': 'Roblox/WinINet'}
 assetUrl = "https://assetdelivery.roblox.com/v1/asset/?id="
 CanDownloadMetadata = True
+
+Quit = False
 
 # Classes:
 class AssetDownloader(QtCore.QThread):
@@ -219,8 +219,12 @@ class AssetDownloader(QtCore.QThread):
         Widget.DownloadAllVersions.setEnabled(True)
 
     def DownloadAllAssets(versionNumber, WidgetMain):
-        print(versionNumber)
+        global Quit
+
         for x in range(int(versionNumber)):
+            if Quit == True:
+                break
+
             print(x + 1)
             AssetDownloader.DownloadAsset(WidgetMain.AssetInput.text(), x + 1)
 
@@ -266,6 +270,11 @@ class MainWidget(QtWidgets.QMainWindow):
     def ToggleDownloadAllVersions(self):
         self.VersionInput.setEnabled(not self.DownloadAllVersions.isChecked())
 
+    def closeEvent(self, event):
+        global Quit
+        Quit = True
+
+
     def InitializeDownload(self):
         # Widget.ProgressBar.setMaximum(0)
         if (self.AssetInput.text() == ""):
@@ -275,10 +284,21 @@ class MainWidget(QtWidgets.QMainWindow):
         # self.AssetInput.setEnabled(False)
         if (self.DownloadAllVersions.isChecked()):
             maxVerId = requests.get(f'https://assetdelivery.roblox.com/v1/assetid/{self.AssetInput.text()}', headers = headersIn)
+            # print(maxVerId.json()['errors']) 
+
+            if (maxVerId.status_code != 200 or "errors" in str(maxVerId.json())):
+                QtWidgets.QMessageBox.critical(MainWidget(), "Error!", "Please enter a valid ID!")
+                return
+
             versionNumber = maxVerId.headers["roblox-assetversionnumber"]
 
-            x = threading.Thread(target=AssetDownloader.DownloadAllAssets, args=(versionNumber, self))
-            x.start()
+            self.pool = concurrent.futures.ThreadPoolExecutor(3)
+
+            future = self.pool.submit(AssetDownloader.DownloadAllAssets, versionNumber, self)
+            
+
+            # x = threading.Thread(target=AssetDownloader.DownloadAllAssets, args=(versionNumber, self))
+            # x.start()
 
             # self.thread = QtCore.QThread()
             # Downloader = AssetDownloader()
@@ -290,8 +310,9 @@ class MainWidget(QtWidgets.QMainWindow):
             #thread.DownloadAllAssets(versionNumber)
             #thread.quit()
         else:
-            x = threading.Thread(target=AssetDownloader.DownloadAsset, args=(self.AssetInput.text(), self.VersionInput.value()))
-            x.start()
+            pass
+            # x = threading.Thread(target=AssetDownloader.DownloadAsset, args=(self.AssetInput.text(), self.VersionInput.value()))
+            # x.start()
         # self.AssetInput.setEnabled(True)
         # print("Download complete")
 
