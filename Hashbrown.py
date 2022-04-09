@@ -292,9 +292,9 @@ class MainWidget(QtWidgets.QMainWindow):
 
             versionNumber = maxVerId.headers["roblox-assetversionnumber"]
 
-            self.pool = concurrent.futures.ThreadPoolExecutor(3)
+            pool = concurrent.futures.ThreadPoolExecutor(3)
 
-            future = self.pool.submit(AssetDownloader.DownloadAllAssets, versionNumber, self)
+            future = pool.submit(AssetDownloader.DownloadAllAssets, versionNumber, self)
             
 
             # x = threading.Thread(target=AssetDownloader.DownloadAllAssets, args=(versionNumber, self))
@@ -310,7 +310,9 @@ class MainWidget(QtWidgets.QMainWindow):
             #thread.DownloadAllAssets(versionNumber)
             #thread.quit()
         else:
-            pass
+            pool = concurrent.futures.ThreadPoolExecutor(3)
+
+            future = pool.submit(AssetDownloader.DownloadAsset, self.AssetInput.text(), self.VersionInput.value())
             # x = threading.Thread(target=AssetDownloader.DownloadAsset, args=(self.AssetInput.text(), self.VersionInput.value()))
             # x.start()
         # self.AssetInput.setEnabled(True)
