@@ -11,6 +11,7 @@ import os
 import time
 import json
 import concurrent.futures
+import subprocess
 
 # Global Variables:
 headersIn = {'User-Agent': 'Roblox/WinINet'}
@@ -283,18 +284,19 @@ class MainWidget(QtWidgets.QMainWindow):
 
         # self.AssetInput.setEnabled(False)
         if (self.DownloadAllVersions.isChecked()):
-            maxVerId = requests.get(f'https://assetdelivery.roblox.com/v1/assetid/{self.AssetInput.text()}', headers = headersIn)
-            # print(maxVerId.json()['errors']) 
+            pass
+            # maxVerId = requests.get(f'https://assetdelivery.roblox.com/v1/assetid/{self.AssetInput.text()}', headers = headersIn)
+            # # print(maxVerId.json()['errors']) 
 
-            if (maxVerId.status_code != 200 or "errors" in str(maxVerId.json())):
-                QtWidgets.QMessageBox.critical(MainWidget(), "Error!", "Please enter a valid ID!")
-                return
+            # if (maxVerId.status_code != 200 or "errors" in str(maxVerId.json())):
+            #     QtWidgets.QMessageBox.critical(MainWidget(), "Error!", "Please enter a valid ID!")
+            #     return
 
-            versionNumber = maxVerId.headers["roblox-assetversionnumber"]
+            # versionNumber = maxVerId.headers["roblox-assetversionnumber"]
 
-            pool = concurrent.futures.ThreadPoolExecutor(3)
+            # pool = concurrent.futures.ThreadPoolExecutor(3)
 
-            future = pool.submit(AssetDownloader.DownloadAllAssets, versionNumber, self)
+            # future = pool.submit(AssetDownloader.DownloadAllAssets, versionNumber, self)
             
 
             # x = threading.Thread(target=AssetDownloader.DownloadAllAssets, args=(versionNumber, self))
@@ -310,9 +312,9 @@ class MainWidget(QtWidgets.QMainWindow):
             #thread.DownloadAllAssets(versionNumber)
             #thread.quit()
         else:
-            pool = concurrent.futures.ThreadPoolExecutor(3)
+            subprocess.call(['python', 'rbxdl.py', 'single', self.AssetInput.text()])
 
-            future = pool.submit(AssetDownloader.DownloadAsset, self.AssetInput.text(), self.VersionInput.value())
+            # future = pool.submit(AssetDownloader.DownloadAsset, self.AssetInput.text(), self.VersionInput.value())
             # x = threading.Thread(target=AssetDownloader.DownloadAsset, args=(self.AssetInput.text(), self.VersionInput.value()))
             # x.start()
         # self.AssetInput.setEnabled(True)
