@@ -284,7 +284,7 @@ class MainWidget(QtWidgets.QMainWindow):
 
         # self.AssetInput.setEnabled(False)
         if (self.DownloadAllVersions.isChecked()):
-            pass
+            subprocess.call(['python', 'rbxdl.py', 'single', f'{self.AssetInput.text()}', f'--allVer'])
             # maxVerId = requests.get(f'https://assetdelivery.roblox.com/v1/assetid/{self.AssetInput.text()}', headers = headersIn)
             # # print(maxVerId.json()['errors']) 
 
@@ -312,7 +312,7 @@ class MainWidget(QtWidgets.QMainWindow):
             #thread.DownloadAllAssets(versionNumber)
             #thread.quit()
         else:
-            subprocess.call(['python', 'rbxdl.py', 'single', self.AssetInput.text()])
+            subprocess.call(['python', 'rbxdl.py', 'single', f'{self.AssetInput.text()}', f'--ver', str(self.VersionInput.value())])
 
             # future = pool.submit(AssetDownloader.DownloadAsset, self.AssetInput.text(), self.VersionInput.value())
             # x = threading.Thread(target=AssetDownloader.DownloadAsset, args=(self.AssetInput.text(), self.VersionInput.value()))
