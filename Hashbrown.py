@@ -14,220 +14,220 @@ import concurrent.futures
 import subprocess
 
 # Global Variables:
-headersIn = {'User-Agent': 'Roblox/WinINet'}
-assetUrl = "https://assetdelivery.roblox.com/v1/asset/?id="
-CanDownloadMetadata = True
+# headersIn = {'User-Agent': 'Roblox/WinINet'}
+# assetUrl = "https://assetdelivery.roblox.com/v1/asset/?id="
+# CanDownloadMetadata = True
 
-Quit = False
+# Quit = False
 
-# Classes:
-class AssetDownloader(QtCore.QThread):
-    ThumbnailSize = "768x432"
-    ThumbnailSizes = ["768x432", "576x324", "480x270", "384x216", "256x144"]
+# # Classes:
+# class AssetDownloader(QtCore.QThread):
+#     ThumbnailSize = "768x432"
+#     ThumbnailSizes = ["768x432", "576x324", "480x270", "384x216", "256x144"]
 
-    IconSize = "512x512"
-    IconSizes = ["50x50", "128x128", "150x150", "256x256", "512x512"]
+#     IconSize = "512x512"
+#     IconSizes = ["50x50", "128x128", "150x150", "256x256", "512x512"]
 
-    AssetSize = "512x512"
-    AssetSizes = ["30x30", "42x42", "50x50", "60x62", "75x75", "110x110", "140x140", "150x150", "160x100", "160x600", "250x250", "256x144", "300x250", "304x166", "384x216", "396x216", "420x420", "480x270", "512x512", "576x324", "700x700", "728x90", "768x432"]
+#     AssetSize = "512x512"
+#     AssetSizes = ["30x30", "42x42", "50x50", "60x62", "75x75", "110x110", "140x140", "150x150", "160x100", "160x600", "250x250", "256x144", "300x250", "304x166", "384x216", "396x216", "420x420", "480x270", "512x512", "576x324", "700x700", "728x90", "768x432"]
 
-    #BEGIN-AssetTypeIDs
-    idk = "Unknown"
-    #assetTypeId = place in table
-    assetTypeList = ["Image", "TShirt", "Audio", "Mesh", "Lua", "HTML", "Text",
-    "Hat", "Place", "Model", "Shirt", "Pants", "Decal", idk, idk, idk, "Avatar","Head", "Face", "Gear",
-    idk, idk, "Badge", "GroupEmblem", idk, "Animation", "Arms", "Legs", "Torso", "RightArm", "LeftArm",
-    "LeftLeg", "RightLeg", "Package", "YouTubeVideo", "GamePass", "App", idk, "Code", "Plugin",
-    "SolidModel", "MeshPart", "HairAccessory", "NeckAccessory", "ShoulderAccessory", "FrontAccessory",
-    "BackAccessory", "WaistAccessory", "ClimbAnimation", "DeathAnimation", "FallAnimation",
-    "IdleAnimation", "JumpAnimation", "RunAnimation", "SwimAnimation", "WalkAnimation", "PoseAnimation",
-    "EarAccessory", "EyeAccessory", "LocalizationTableManifest", "LocalizationTableTranslation",
-    "EmoteAnimation", "Video", "TexturePack", "TShirtAccessory", "ShirtAccessory", "PantsAccessory",
-    "JacketAccessory", "SweaterAccessory", "ShortsAccessory", "LeftShoeAccessory", "RightShoeAccessory",
-    "DressSkirtAccessory"]
+#     #BEGIN-AssetTypeIDs
+#     idk = "Unknown"
+#     #assetTypeId = place in table
+#     assetTypeList = ["Image", "TShirt", "Audio", "Mesh", "Lua", "HTML", "Text",
+#     "Hat", "Place", "Model", "Shirt", "Pants", "Decal", idk, idk, idk, "Avatar","Head", "Face", "Gear",
+#     idk, idk, "Badge", "GroupEmblem", idk, "Animation", "Arms", "Legs", "Torso", "RightArm", "LeftArm",
+#     "LeftLeg", "RightLeg", "Package", "YouTubeVideo", "GamePass", "App", idk, "Code", "Plugin",
+#     "SolidModel", "MeshPart", "HairAccessory", "NeckAccessory", "ShoulderAccessory", "FrontAccessory",
+#     "BackAccessory", "WaistAccessory", "ClimbAnimation", "DeathAnimation", "FallAnimation",
+#     "IdleAnimation", "JumpAnimation", "RunAnimation", "SwimAnimation", "WalkAnimation", "PoseAnimation",
+#     "EarAccessory", "EyeAccessory", "LocalizationTableManifest", "LocalizationTableTranslation",
+#     "EmoteAnimation", "Video", "TexturePack", "TShirtAccessory", "ShirtAccessory", "PantsAccessory",
+#     "JacketAccessory", "SweaterAccessory", "ShortsAccessory", "LeftShoeAccessory", "RightShoeAccessory",
+#     "DressSkirtAccessory"]
 
-    def fixBadStr(inputStr):
-        badChars = ['"', ":"]
-        goodChars = ["'", "-"]
+#     def fixBadStr(inputStr):
+#         badChars = ['"', ":"]
+#         goodChars = ["'", "-"]
 
-        outputString = re.sub("[*/\\\\<>?|]", '', inputStr)
-        for i in range(len(badChars)):
-            outputString = outputString.replace(badChars[i], goodChars[i])
-        return outputString
+#         outputString = re.sub("[*/\\\\<>?|]", '', inputStr)
+#         for i in range(len(badChars)):
+#             outputString = outputString.replace(badChars[i], goodChars[i])
+#         return outputString
 
-    def DownloadMetadata(AssetID, headers):
-        dlAssetMetadata = requests.get(f'http://api.roblox.com/Marketplace/ProductInfo?assetId={AssetID}')
+#     def DownloadMetadata(AssetID, headers):
+#         dlAssetMetadata = requests.get(f'http://api.roblox.com/Marketplace/ProductInfo?assetId={AssetID}')
 
-        if (dlAssetMetadata.status_code != 200):
-            return None
+#         if (dlAssetMetadata.status_code != 200):
+#             return None
 
-        return dlAssetMetadata
+#         return dlAssetMetadata
 
-    def DownloadAssetIcon(AssetID, Resolution):
-        ThumbnailRequest = requests.get(f"https://thumbnails.roblox.com/v1/assets?assetIds={AssetID}&size={Resolution}&format=Png&isCircular=false")
+#     def DownloadAssetIcon(AssetID, Resolution):
+#         ThumbnailRequest = requests.get(f"https://thumbnails.roblox.com/v1/assets?assetIds={AssetID}&size={Resolution}&format=Png&isCircular=false")
 
-        if (ThumbnailRequest.status_code != 200):
-            return None
+#         if (ThumbnailRequest.status_code != 200):
+#             return None
         
-        ThumbnailRequestJson = ThumbnailRequest.json()
+#         ThumbnailRequestJson = ThumbnailRequest.json()
 
-        return ThumbnailRequestJson["data"][0]["imageUrl"]
+#         return ThumbnailRequestJson["data"][0]["imageUrl"]
 
-    def DownloadThumbnails(AssetID, ThumbnailResolution, IconResolution):
+#     def DownloadThumbnails(AssetID, ThumbnailResolution, IconResolution):
         
-        GetUniverseID = requests.get(f"https://api.roblox.com/universes/get-universe-containing-place?placeid={AssetID}")
+#         GetUniverseID = requests.get(f"https://api.roblox.com/universes/get-universe-containing-place?placeid={AssetID}")
 
-        if (GetUniverseID.status_code != 200):
-            return None, None
+#         if (GetUniverseID.status_code != 200):
+#             return None, None
 
-        UniverseID = GetUniverseID.json()["UniverseId"]
+#         UniverseID = GetUniverseID.json()["UniverseId"]
 
-        ThumbnailRequest = requests.get(f"https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds={UniverseID}&countPerUniverse=999999&size={ThumbnailResolution}&format=Png&isCircular=false")
-        IconRequest = requests.get(f"https://thumbnails.roblox.com/v1/games/icons?universeIds={UniverseID}&size={IconResolution}&format=Png&isCircular=false")
+#         ThumbnailRequest = requests.get(f"https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds={UniverseID}&countPerUniverse=999999&size={ThumbnailResolution}&format=Png&isCircular=false")
+#         IconRequest = requests.get(f"https://thumbnails.roblox.com/v1/games/icons?universeIds={UniverseID}&size={IconResolution}&format=Png&isCircular=false")
 
-        if (ThumbnailRequest.status_code != 200 or IconRequest.status_code != 200):
-            return None, None
+#         if (ThumbnailRequest.status_code != 200 or IconRequest.status_code != 200):
+#             return None, None
 
-        ThumbnailRequestJson = ThumbnailRequest.json()
-        Thumbnails = ThumbnailRequestJson["data"][0]["thumbnails"]
+#         ThumbnailRequestJson = ThumbnailRequest.json()
+#         Thumbnails = ThumbnailRequestJson["data"][0]["thumbnails"]
 
-        ThumbnailImageUrls = []
+#         ThumbnailImageUrls = []
         
-        for x in Thumbnails:
-            ThumbnailImageUrls.append(x["imageUrl"])
+#         for x in Thumbnails:
+#             ThumbnailImageUrls.append(x["imageUrl"])
 
-        IconRequestJson = IconRequest.json()
-        Icon = IconRequestJson["data"][0]["imageUrl"]
+#         IconRequestJson = IconRequest.json()
+#         Icon = IconRequestJson["data"][0]["imageUrl"]
 
-        return ThumbnailImageUrls, Icon
+#         return ThumbnailImageUrls, Icon
             
 
-        # if (CanDownloadMetadata):
-        #     obj = json.loads(dlAssetMetadata.content)
-        #     open(Directory + "Metadata.json", "w", encoding='utf-8').write(json.dumps(obj, indent=4))
+#         # if (CanDownloadMetadata):
+#         #     obj = json.loads(dlAssetMetadata.content)
+#         #     open(Directory + "Metadata.json", "w", encoding='utf-8').write(json.dumps(obj, indent=4))
 
-        # assetInfo = dlAssetMetadata.json()
-        # assetName = assetInfo["Name"]
-        # assetTypeId = assetInfo["AssetTypeId"]
-        # creatorName = assetInfo["Creator"]["Name"]
-        # AssetTypeName = AssetDownloader.assetTypeList[assetTypeId - 1]
-        # assetDate = f"{AssetDownloader.fixBadStr(headers['Last-Modified'])[5:-4]}"
+#         # assetInfo = dlAssetMetadata.json()
+#         # assetName = assetInfo["Name"]
+#         # assetTypeId = assetInfo["AssetTypeId"]
+#         # creatorName = assetInfo["Creator"]["Name"]
+#         # AssetTypeName = AssetDownloader.assetTypeList[assetTypeId - 1]
+#         # assetDate = f"{AssetDownloader.fixBadStr(headers['Last-Modified'])[5:-4]}"
 
-        # return [assetInfo, assetName, assetTypeId, creatorName, AssetTypeName, assetDate]
+#         # return [assetInfo, assetName, assetTypeId, creatorName, AssetTypeName, assetDate]
 
-    def assetExt(assetTypeId):
-        if assetTypeId == 1: fileExt = ".png"
-        elif assetTypeId == 3: fileExt = ".mp3"
-        elif assetTypeId == 4: fileExt = ".mesh"
-        elif assetTypeId == 5: fileExt = ".lua"
-        elif assetTypeId == 9: fileExt = ".rbxl"
-        else: fileExt = ".rbxm"
-        return fileExt
+#     def assetExt(assetTypeId):
+#         if assetTypeId == 1: fileExt = ".png"
+#         elif assetTypeId == 3: fileExt = ".mp3"
+#         elif assetTypeId == 4: fileExt = ".mesh"
+#         elif assetTypeId == 5: fileExt = ".lua"
+#         elif assetTypeId == 9: fileExt = ".rbxl"
+#         else: fileExt = ".rbxm"
+#         return fileExt
 
-    def DownloadAsset(AssetID, VersionNumber):
-        FileName = "DownloadedAsset"
-        FileType = ".rbxm"
+#     def DownloadAsset(AssetID, VersionNumber):
+#         FileName = "DownloadedAsset"
+#         FileType = ".rbxm"
 
-        print("Downloading " + AssetID + "...")
-        Widget.ProgressBar.setMaximum(0)
-        Widget.AssetInput.setEnabled(False)
-        Widget.VersionInput.setEnabled(False)
-        Widget.DownloadAllVersions.setEnabled(False)
-        dlAsset = requests.get(f'{assetUrl}{AssetID}&version={VersionNumber}', headers = headersIn, stream=True)
-        FileSize = dlAsset.headers["content-length"]
-        BlockSize = 1024
+#         print("Downloading " + AssetID + "...")
+#         Widget.ProgressBar.setMaximum(0)
+#         Widget.AssetInput.setEnabled(False)
+#         Widget.VersionInput.setEnabled(False)
+#         Widget.DownloadAllVersions.setEnabled(False)
+#         dlAsset = requests.get(f'{assetUrl}{AssetID}&version={VersionNumber}', headers = headersIn, stream=True)
+#         FileSize = dlAsset.headers["content-length"]
+#         BlockSize = 1024
 
-        if (dlAsset.status_code != 200):
-            return dlAsset.status_code
+#         if (dlAsset.status_code != 200):
+#             return dlAsset.status_code
 
-        MetaData = AssetDownloader.DownloadMetadata(AssetID, dlAsset.headers)
+#         MetaData = AssetDownloader.DownloadMetadata(AssetID, dlAsset.headers)
 
-        if (MetaData != None):
-            assetInfo = MetaData.json()
-            assetName = assetInfo["Name"]
-            assetTypeId = assetInfo["AssetTypeId"]
-            creatorName = assetInfo["Creator"]["Name"]
-            AssetTypeName = AssetDownloader.assetTypeList[assetTypeId - 1]
-            assetDate = f"{dlAsset.headers['Last-Modified']}" # [5:-4]
+#         if (MetaData != None):
+#             assetInfo = MetaData.json()
+#             assetName = assetInfo["Name"]
+#             assetTypeId = assetInfo["AssetTypeId"]
+#             creatorName = assetInfo["Creator"]["Name"]
+#             AssetTypeName = AssetDownloader.assetTypeList[assetTypeId - 1]
+#             assetDate = f"{dlAsset.headers['Last-Modified']}" # [5:-4]
 
-            FileName = AssetDownloader.fixBadStr(assetName)
-            FileType = AssetDownloader.assetExt(assetTypeId)
+#             FileName = AssetDownloader.fixBadStr(assetName)
+#             FileType = AssetDownloader.assetExt(assetTypeId)
 
-        if (VersionNumber != 0):
-            FileName += f" ({VersionNumber})"
+#         if (VersionNumber != 0):
+#             FileName += f" ({VersionNumber})"
 
-        os.mkdir(os.path.join(os.getcwd(), FileName))
-        # Widget.ProgressBar.setMaximum(int(FileSize))
+#         os.mkdir(os.path.join(os.getcwd(), FileName))
+#         # Widget.ProgressBar.setMaximum(int(FileSize))
 
-        with open(f'{FileName}/{FileName}{FileType}', 'wb') as file:
-            for data in dlAsset.iter_content(BlockSize):
-                #Widget.ProgressBar.setValue(len(data))
-                file.write(data)
+#         with open(f'{FileName}/{FileName}{FileType}', 'wb') as file:
+#             for data in dlAsset.iter_content(BlockSize):
+#                 #Widget.ProgressBar.setValue(len(data))
+#                 file.write(data)
 
-        if (AssetTypeName == "Place"):
-            Thumbnails, Icon = AssetDownloader.DownloadThumbnails(AssetID, AssetDownloader.ThumbnailSize, AssetDownloader.IconSize)
+#         if (AssetTypeName == "Place"):
+#             Thumbnails, Icon = AssetDownloader.DownloadThumbnails(AssetID, AssetDownloader.ThumbnailSize, AssetDownloader.IconSize)
 
-            IconRequest = requests.get(Icon)
+#             IconRequest = requests.get(Icon)
 
-            if (IconRequest.status_code == 200):
-                open(f'{FileName}/Icon.png', "wb").write(IconRequest.content)
+#             if (IconRequest.status_code == 200):
+#                 open(f'{FileName}/Icon.png', "wb").write(IconRequest.content)
 
-            counter = 1
-            for thumbnail in Thumbnails:
-                image = requests.get(thumbnail)
+#             counter = 1
+#             for thumbnail in Thumbnails:
+#                 image = requests.get(thumbnail)
 
-                if (image.status_code == 200):
-                    open(f'{FileName}/Thumbnail ({counter}).png', "wb").write(image.content)
-                    counter += 1
-        else:
-            AssetIconURL = AssetDownloader.DownloadAssetIcon(AssetID, AssetDownloader.AssetSize)
+#                 if (image.status_code == 200):
+#                     open(f'{FileName}/Thumbnail ({counter}).png', "wb").write(image.content)
+#                     counter += 1
+#         else:
+#             AssetIconURL = AssetDownloader.DownloadAssetIcon(AssetID, AssetDownloader.AssetSize)
 
-            if (AssetIconURL != None):
-                AssetIcon = requests.get(AssetIconURL)
-                open(f'{FileName}/Icon.png', "wb").write(AssetIcon.content)
+#             if (AssetIconURL != None):
+#                 AssetIcon = requests.get(AssetIconURL)
+#                 open(f'{FileName}/Icon.png', "wb").write(AssetIcon.content)
 
 
-        # open(f'{FileName}/{FileName}{FileType}', "wb").write(dlAsset.content)
+#         # open(f'{FileName}/{FileName}{FileType}', "wb").write(dlAsset.content)
 
-        if (CanDownloadMetadata and MetaData != None):
-            obj = json.loads(MetaData.content)
-            open(f'{FileName}/Metadata.json', "w", encoding='utf-8').write(json.dumps(obj, indent=4))
+#         if (CanDownloadMetadata and MetaData != None):
+#             obj = json.loads(MetaData.content)
+#             open(f'{FileName}/Metadata.json', "w", encoding='utf-8').write(json.dumps(obj, indent=4))
 
-            # Write last modified date:
-            Path = f'{FileName}/{FileName}{FileType}'
-            temp_time = time.strptime(assetDate, "%a, %d %b %Y %H:%M:%S %Z")
-            epoch_time = time.mktime(temp_time)
+#             # Write last modified date:
+#             Path = f'{FileName}/{FileName}{FileType}'
+#             temp_time = time.strptime(assetDate, "%a, %d %b %Y %H:%M:%S %Z")
+#             epoch_time = time.mktime(temp_time)
 
-            os.utime(Path, (epoch_time, epoch_time))
+#             os.utime(Path, (epoch_time, epoch_time))
 
-            # if (AssetTypeName == "Place" and Thumbnails != None and Icon != None):
-            #     IconRequest = requests.get(Icon)
+#             # if (AssetTypeName == "Place" and Thumbnails != None and Icon != None):
+#             #     IconRequest = requests.get(Icon)
 
-            #     if (IconRequest.status_code == 200):
-            #         open(f'{FileName}/Icon.png', "wb").write(IconRequest.content)
+#             #     if (IconRequest.status_code == 200):
+#             #         open(f'{FileName}/Icon.png', "wb").write(IconRequest.content)
 
-            #     counter = 1
-            #     for thumbnail in Thumbnails:
-            #         image = requests.get(thumbnail)
+#             #     counter = 1
+#             #     for thumbnail in Thumbnails:
+#             #         image = requests.get(thumbnail)
 
-            #         if (image.status_code == 200):
-            #             open(f'{FileName}/Thumbnail ({counter}).png', "wb").write(image.content)
-            #             counter += 1
+#             #         if (image.status_code == 200):
+#             #             open(f'{FileName}/Thumbnail ({counter}).png', "wb").write(image.content)
+#             #             counter += 1
         
-        Widget.ProgressBar.setMaximum(100)
-        Widget.AssetInput.setEnabled(True)
-        Widget.VersionInput.setEnabled(True)
-        Widget.DownloadAllVersions.setEnabled(True)
+#         Widget.ProgressBar.setMaximum(100)
+#         Widget.AssetInput.setEnabled(True)
+#         Widget.VersionInput.setEnabled(True)
+#         Widget.DownloadAllVersions.setEnabled(True)
 
-    def DownloadAllAssets(versionNumber, WidgetMain):
-        global Quit
+#     def DownloadAllAssets(versionNumber, WidgetMain):
+#         global Quit
 
-        for x in range(int(versionNumber)):
-            if Quit == True:
-                break
+#         for x in range(int(versionNumber)):
+#             if Quit == True:
+#                 break
 
-            print(x + 1)
-            AssetDownloader.DownloadAsset(WidgetMain.AssetInput.text(), x + 1)
+#             print(x + 1)
+#             AssetDownloader.DownloadAsset(WidgetMain.AssetInput.text(), x + 1)
 
 class MainWidget(QtWidgets.QMainWindow):
     def __init__(self):
@@ -321,11 +321,12 @@ class MainWidget(QtWidgets.QMainWindow):
         # print("Download complete")
 
     def ApplySettings(self):
+        pass
         # ThumbnailSize = ThumbnailSizes[self.SettingsWidget.ThumbnailSizesDropdown.currentIndex()]
-        AssetDownloader.ThumbnailSize = AssetDownloader.ThumbnailSizes[self.SettingsWidget.ThumbnailSizesDropdown.currentIndex()]
-        AssetDownloader.IconSize = AssetDownloader.IconSizes[self.SettingsWidget.IconSizesDropdown.currentIndex()]
-        AssetDownloader.AssetSize = AssetDownloader.AssetSizes[self.SettingsWidget.AssetSizesDropdown.currentIndex()]
-        print(AssetDownloader.ThumbnailSize)
+        # AssetDownloader.ThumbnailSize = AssetDownloader.ThumbnailSizes[self.SettingsWidget.ThumbnailSizesDropdown.currentIndex()]
+        # AssetDownloader.IconSize = AssetDownloader.IconSizes[self.SettingsWidget.IconSizesDropdown.currentIndex()]
+        # AssetDownloader.AssetSize = AssetDownloader.AssetSizes[self.SettingsWidget.AssetSizesDropdown.currentIndex()]
+        # print(AssetDownloader.ThumbnailSize)
 
     def SettingsMenuInit(self):
         self.SettingsWidget = QtWidgets.QWidget()
@@ -342,8 +343,8 @@ class MainWidget(QtWidgets.QMainWindow):
         self.SettingsWidget.ThumbnailSizesDropdown = QtWidgets.QComboBox(self.SettingsWidget)
         self.SettingsWidget.ThumbnailSizesDropdown.setGeometry(132, 4, 128, 24)
 
-        for x in AssetDownloader.ThumbnailSizes:
-            self.SettingsWidget.ThumbnailSizesDropdown.addItem(x)
+        # for x in AssetDownloader.ThumbnailSizes:
+        #     self.SettingsWidget.ThumbnailSizesDropdown.addItem(x)
 
         #Icon resolution option
         IconSizeOptionText = QtWidgets.QLabel(self.SettingsWidget)
@@ -353,8 +354,8 @@ class MainWidget(QtWidgets.QMainWindow):
         self.SettingsWidget.IconSizesDropdown = QtWidgets.QComboBox(self.SettingsWidget)
         self.SettingsWidget.IconSizesDropdown.setGeometry(132, 32, 128, 24)
 
-        for x in AssetDownloader.IconSizes:
-            self.SettingsWidget.IconSizesDropdown.addItem(x)
+        # for x in AssetDownloader.IconSizes:
+        #     self.SettingsWidget.IconSizesDropdown.addItem(x)
 
         self.SettingsWidget.IconSizesDropdown.setCurrentIndex(4)
 
@@ -366,8 +367,8 @@ class MainWidget(QtWidgets.QMainWindow):
         self.SettingsWidget.AssetSizesDropdown = QtWidgets.QComboBox(self.SettingsWidget)
         self.SettingsWidget.AssetSizesDropdown.setGeometry(132, 60, 128, 24)
 
-        for x in AssetDownloader.AssetSizes:
-            self.SettingsWidget.AssetSizesDropdown.addItem(x)
+        # for x in AssetDownloader.AssetSizes:
+        #     self.SettingsWidget.AssetSizesDropdown.addItem(x)
 
         self.SettingsWidget.AssetSizesDropdown.setCurrentIndex(18)
 
