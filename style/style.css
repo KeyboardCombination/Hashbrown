@@ -21,7 +21,7 @@ QCheckBox::indicator {
     background-color: #212121;
     color: #fafafa;
     border: 1px solid #424242;
-    border-radius: 4px;
+    border-radius: 2px;
 }
 
 QCheckBox::indicator:checked {
