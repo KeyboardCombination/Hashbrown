@@ -238,14 +238,14 @@ class MainWidget(QtWidgets.QMainWindow):
 
         self.InitMainUI()
         self.MenubarInit()
-        self.SettingsMenuInit()
+        # self.SettingsMenuInit()
         self.AboutMenuInit()
 
     def InitMainUI(self):
         self.AssetInput = QtWidgets.QLineEdit(self)
         self.AssetInput.setGeometry(224, 32, 192, 32)
         self.AssetInput.setAlignment(QtCore.Qt.AlignCenter)
-        self.AssetInput.setPlaceholderText("Insert Asset ID/Hash")
+        self.AssetInput.setPlaceholderText("Insert Asset ID")
 
         self.VersionInput = QtWidgets.QSpinBox(self)
         # self.VersionInput.setMaximum(2048)
@@ -328,58 +328,58 @@ class MainWidget(QtWidgets.QMainWindow):
         # AssetDownloader.AssetSize = AssetDownloader.AssetSizes[self.SettingsWidget.AssetSizesDropdown.currentIndex()]
         # print(AssetDownloader.ThumbnailSize)
 
-    def SettingsMenuInit(self):
-        self.SettingsWidget = QtWidgets.QWidget()
-        self.SettingsWidget.setWindowTitle("Settings")
-        self.SettingsWidget.setWindowIcon(QtGui.QIcon('icon/StudioIcon.png'))
-        self.SettingsWidget.setFixedSize(640, 480)
-        self.SettingsWidget.setStyleSheet(open("style/style.css").read())
+    # def SettingsMenuInit(self):
+    #     self.SettingsWidget = QtWidgets.QWidget()
+    #     self.SettingsWidget.setWindowTitle("Settings")
+    #     self.SettingsWidget.setWindowIcon(QtGui.QIcon('icon/StudioIcon.png'))
+    #     self.SettingsWidget.setFixedSize(640, 480)
+    #     self.SettingsWidget.setStyleSheet(open("style/style.css").read())
 
-        #Thumbnail resolution option
-        ThumbnailSizeOptionText = QtWidgets.QLabel(self.SettingsWidget)
-        ThumbnailSizeOptionText.setText("Thumbnail resolution:")
-        ThumbnailSizeOptionText.setGeometry(4, 4, 128, 24)
+    #     #Thumbnail resolution option
+    #     ThumbnailSizeOptionText = QtWidgets.QLabel(self.SettingsWidget)
+    #     ThumbnailSizeOptionText.setText("Thumbnail resolution:")
+    #     ThumbnailSizeOptionText.setGeometry(4, 4, 128, 24)
 
-        self.SettingsWidget.ThumbnailSizesDropdown = QtWidgets.QComboBox(self.SettingsWidget)
-        self.SettingsWidget.ThumbnailSizesDropdown.setGeometry(132, 4, 128, 24)
+    #     self.SettingsWidget.ThumbnailSizesDropdown = QtWidgets.QComboBox(self.SettingsWidget)
+    #     self.SettingsWidget.ThumbnailSizesDropdown.setGeometry(132, 4, 128, 24)
 
-        # for x in AssetDownloader.ThumbnailSizes:
-        #     self.SettingsWidget.ThumbnailSizesDropdown.addItem(x)
+    #     # for x in AssetDownloader.ThumbnailSizes:
+    #     #     self.SettingsWidget.ThumbnailSizesDropdown.addItem(x)
 
-        #Icon resolution option
-        IconSizeOptionText = QtWidgets.QLabel(self.SettingsWidget)
-        IconSizeOptionText.setText("Icon resolution:")
-        IconSizeOptionText.setGeometry(4, 32, 128, 24)
+    #     #Icon resolution option
+    #     IconSizeOptionText = QtWidgets.QLabel(self.SettingsWidget)
+    #     IconSizeOptionText.setText("Icon resolution:")
+    #     IconSizeOptionText.setGeometry(4, 32, 128, 24)
 
-        self.SettingsWidget.IconSizesDropdown = QtWidgets.QComboBox(self.SettingsWidget)
-        self.SettingsWidget.IconSizesDropdown.setGeometry(132, 32, 128, 24)
+    #     self.SettingsWidget.IconSizesDropdown = QtWidgets.QComboBox(self.SettingsWidget)
+    #     self.SettingsWidget.IconSizesDropdown.setGeometry(132, 32, 128, 24)
 
-        # for x in AssetDownloader.IconSizes:
-        #     self.SettingsWidget.IconSizesDropdown.addItem(x)
+    #     # for x in AssetDownloader.IconSizes:
+    #     #     self.SettingsWidget.IconSizesDropdown.addItem(x)
 
-        self.SettingsWidget.IconSizesDropdown.setCurrentIndex(4)
+    #     self.SettingsWidget.IconSizesDropdown.setCurrentIndex(4)
 
-        #asset resolution option
-        AssetSizeOptionText = QtWidgets.QLabel(self.SettingsWidget)
-        AssetSizeOptionText.setText("Asset icon resolution:")
-        AssetSizeOptionText.setGeometry(4, 60, 128, 24)
+    #     #asset resolution option
+    #     AssetSizeOptionText = QtWidgets.QLabel(self.SettingsWidget)
+    #     AssetSizeOptionText.setText("Asset icon resolution:")
+    #     AssetSizeOptionText.setGeometry(4, 60, 128, 24)
 
-        self.SettingsWidget.AssetSizesDropdown = QtWidgets.QComboBox(self.SettingsWidget)
-        self.SettingsWidget.AssetSizesDropdown.setGeometry(132, 60, 128, 24)
+    #     self.SettingsWidget.AssetSizesDropdown = QtWidgets.QComboBox(self.SettingsWidget)
+    #     self.SettingsWidget.AssetSizesDropdown.setGeometry(132, 60, 128, 24)
 
-        # for x in AssetDownloader.AssetSizes:
-        #     self.SettingsWidget.AssetSizesDropdown.addItem(x)
+    #     # for x in AssetDownloader.AssetSizes:
+    #     #     self.SettingsWidget.AssetSizesDropdown.addItem(x)
 
-        self.SettingsWidget.AssetSizesDropdown.setCurrentIndex(18)
+    #     self.SettingsWidget.AssetSizesDropdown.setCurrentIndex(18)
 
-        ApplyButton = QtWidgets.QPushButton(self.SettingsWidget)
-        ApplyButton.setText("Apply")
-        ApplyButton.setGeometry(540, 444, 96, 32)
+    #     ApplyButton = QtWidgets.QPushButton(self.SettingsWidget)
+    #     ApplyButton.setText("Apply")
+    #     ApplyButton.setGeometry(540, 444, 96, 32)
 
-        ApplyButton.clicked.connect(self.ApplySettings)
+    #     ApplyButton.clicked.connect(self.ApplySettings)
 
-    def ShowSettingsMenu(self):
-        self.SettingsWidget.show()
+    # def ShowSettingsMenu(self):
+    #     self.SettingsWidget.show()
 
     def AboutMenuInit(self):
         self.AboutWidget = QtWidgets.QWidget()
@@ -399,16 +399,16 @@ class MainWidget(QtWidgets.QMainWindow):
         Menubar = self.menuBar()
 
         #Tools Tab:
-        SettingsAction = QtGui.QAction("&Settings", self)
-        SettingsAction.setShortcut(QtGui.QKeySequence("Ctrl+S"))
-        SettingsAction.triggered.connect(self.ShowSettingsMenu)
+        # SettingsAction = QtGui.QAction("&Settings", self)
+        # SettingsAction.setShortcut(QtGui.QKeySequence("Ctrl+S"))
+        # SettingsAction.triggered.connect(self.ShowSettingsMenu)
 
         QuitAction = QtGui.QAction("&Quit", self)
         QuitAction.setShortcut(QtGui.QKeySequence("Ctrl+Q"))
         QuitAction.triggered.connect(self.close)
 
         ToolsMenu = Menubar.addMenu("&Tools")
-        ToolsMenu.addAction(SettingsAction)
+        # ToolsMenu.addAction(SettingsAction)
         ToolsMenu.addAction(QuitAction)
 
         #Help Tab:
