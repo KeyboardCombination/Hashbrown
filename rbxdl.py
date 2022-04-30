@@ -4,16 +4,16 @@ from ast import literal_eval
 astTypes = {
   0:['Unknown', ''],
   1:['Image', '.png'],
-  2:['TeeShirt', '.xml'],
+  2:['TeeShirt', '.rbxm'],
   3:['Audio', '.xml'],
   4:['Mesh', ''],
   5:['Lua', ''], 
-  8:['Hat', '.xml'],
+  8:['Hat', '.rbxm'],
   9:['Place', '.rbxl'],
   10:['Model', '.rbxm'],
   11:['Shirt', '.xml'],
   12:['Pants', '.xml'],
-  13:['Decal', '.xml'],
+  13:['Decal', '.rbxm'],
   17:['Head', '.xml'],
   18:['Face', '.xml'],
   19:['Gear', '.xml'],
@@ -97,7 +97,7 @@ def saveAsset(astId, astTypeStr, cDir, sDirName, astData, astVer):
                             metaFile.write(f'\t{e} : {jsonMeta[i][e]}\n')
                     else:
                         metaFile.write(f'{i}: {jsonMeta[i]}\n')
-        metaFile.close()
+                metaFile.close()
         return 1
     except OSError as e:
         writeLogs(e)

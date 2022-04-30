@@ -20,6 +20,10 @@ import subprocess
 
 # Quit = False
 
+# Config:
+Dir = "Downloaded"
+SaveInFolder = True
+
 # # Classes:
 # class AssetDownloader(QtCore.QThread):
 #     ThumbnailSize = "768x432"
@@ -238,7 +242,7 @@ class MainWidget(QtWidgets.QMainWindow):
 
         self.InitMainUI()
         self.MenubarInit()
-        # self.SettingsMenuInit()
+        self.SettingsMenuInit()
         self.AboutMenuInit()
 
     def InitMainUI(self):
@@ -265,8 +269,50 @@ class MainWidget(QtWidgets.QMainWindow):
         self.ProgressBar = QtWidgets.QProgressBar(self)
         self.ProgressBar.setGeometry(192, 132, 256, 24)
 
-    # def UpdateProgressBar(self, value):
-    #     self.ProgressBar.setValue(value)
+    def SettingsMenuInit(self):
+        self.SettingsWidget = QtWidgets.QWidget()
+        self.SettingsWidget.setWindowTitle("Settings")
+        self.SettingsWidget.setWindowIcon(QtGui.QIcon('icon/StudioIcon.png'))
+        self.SettingsWidget.setFixedSize(640, 480)
+        self.SettingsWidget.setStyleSheet(open("style/style.css").read())
+
+        #Directory setting:
+        self.DirectoryInputText = QtWidgets.QLabel(self.SettingsWidget)
+        self.DirectoryInputText.setText("Directory:")
+        self.DirectoryInputText.setGeometry(4, 6, 128, 16)
+
+        self.DirectoryInput = QtWidgets.QFileDialog(self.SettingsWidget)
+        self.DirectoryInput.setFileMode(QtWidgets.QFileDialog.FileMode.Directory)
+
+        self.DirectoryStringInput = QtWidgets.QLineEdit(self.SettingsWidget)
+        self.DirectoryStringInput.setGeometry(64, 4, 128, 24)
+
+        self.SelectDirectoryButton = QtWidgets.QPushButton(self.SettingsWidget)
+        self.SelectDirectoryButton.setGeometry(196, 4, 24, 24)
+        self.SelectDirectoryButton.setText("...")
+
+        self.SelectDirectoryButton.clicked.connect(self.SetDirectory)
+        
+        #Save asset in directory setting:
+        # self.SaveInFolderOption = QtWidgets.QCheckBox(self.SettingsWidget)
+        # self.SaveInFolderOption.setText("Download all versions")
+        # self.SaveInFolderOption.setGeometry(4, 64, 256, 24)
+
+        #Apply settings button:
+        ApplyButton = QtWidgets.QPushButton(self.SettingsWidget)
+        ApplyButton.setText("Apply")
+        ApplyButton.setGeometry(540, 444, 96, 32)
+
+        ApplyButton.clicked.connect(self.ApplySettings)
+    
+    def ApplySettings(self):
+        global Dir
+
+        Dir = self.DirectoryStringInput.text()
+
+    def SetDirectory(self):
+        SelectedDirectory = self.DirectoryInput.getExistingDirectory()
+        self.DirectoryStringInput.setText(SelectedDirectory)
 
     def ToggleDownloadAllVersions(self):
         self.VersionInput.setEnabled(not self.DownloadAllVersions.isChecked())
@@ -274,7 +320,6 @@ class MainWidget(QtWidgets.QMainWindow):
     def closeEvent(self, event):
         global Quit
         Quit = True
-
 
     def InitializeDownload(self):
         # Widget.ProgressBar.setMaximum(0)
@@ -284,7 +329,10 @@ class MainWidget(QtWidgets.QMainWindow):
 
         # self.AssetInput.setEnabled(False)
         if (self.DownloadAllVersions.isChecked()):
-            subprocess.call(['python', 'rbxdl.py', 'single', f'{self.AssetInput.text()}', f'--allVer'])
+            if (SaveInFolder):
+                subprocess.call(['python', 'rbxdl.py', 'single', f'{self.AssetInput.text()}', f'--allVer', f'--sdirs', f'--dir', Dir])
+            else:
+                subprocess.call(['python', 'rbxdl.py', 'single', f'{self.AssetInput.text()}', f'--allVer', f'--dir', Dir])
             # maxVerId = requests.get(f'https://assetdelivery.roblox.com/v1/assetid/{self.AssetInput.text()}', headers = headersIn)
             # # print(maxVerId.json()['errors']) 
 
@@ -312,7 +360,10 @@ class MainWidget(QtWidgets.QMainWindow):
             #thread.DownloadAllAssets(versionNumber)
             #thread.quit()
         else:
-            subprocess.call(['python', 'rbxdl.py', 'single', f'{self.AssetInput.text()}', f'--ver', str(self.VersionInput.value())])
+            if (SaveInFolder):
+                subprocess.call(['python', 'rbxdl.py', 'single', f'{self.AssetInput.text()}', f'--ver', str(self.VersionInput.value()), f'--sdirs', f'--dir', Dir])
+            else:
+                subprocess.call(['python', 'rbxdl.py', 'single', f'{self.AssetInput.text()}', f'--ver', str(self.VersionInput.value()), f'--dir', Dir])
 
             # future = pool.submit(AssetDownloader.DownloadAsset, self.AssetInput.text(), self.VersionInput.value())
             # x = threading.Thread(target=AssetDownloader.DownloadAsset, args=(self.AssetInput.text(), self.VersionInput.value()))
@@ -320,66 +371,10 @@ class MainWidget(QtWidgets.QMainWindow):
         # self.AssetInput.setEnabled(True)
         # print("Download complete")
 
-    def ApplySettings(self):
-        pass
-        # ThumbnailSize = ThumbnailSizes[self.SettingsWidget.ThumbnailSizesDropdown.currentIndex()]
-        # AssetDownloader.ThumbnailSize = AssetDownloader.ThumbnailSizes[self.SettingsWidget.ThumbnailSizesDropdown.currentIndex()]
-        # AssetDownloader.IconSize = AssetDownloader.IconSizes[self.SettingsWidget.IconSizesDropdown.currentIndex()]
-        # AssetDownloader.AssetSize = AssetDownloader.AssetSizes[self.SettingsWidget.AssetSizesDropdown.currentIndex()]
-        # print(AssetDownloader.ThumbnailSize)
-
-    # def SettingsMenuInit(self):
-    #     self.SettingsWidget = QtWidgets.QWidget()
-    #     self.SettingsWidget.setWindowTitle("Settings")
-    #     self.SettingsWidget.setWindowIcon(QtGui.QIcon('icon/StudioIcon.png'))
-    #     self.SettingsWidget.setFixedSize(640, 480)
-    #     self.SettingsWidget.setStyleSheet(open("style/style.css").read())
-
-    #     #Thumbnail resolution option
-    #     ThumbnailSizeOptionText = QtWidgets.QLabel(self.SettingsWidget)
-    #     ThumbnailSizeOptionText.setText("Thumbnail resolution:")
-    #     ThumbnailSizeOptionText.setGeometry(4, 4, 128, 24)
-
-    #     self.SettingsWidget.ThumbnailSizesDropdown = QtWidgets.QComboBox(self.SettingsWidget)
-    #     self.SettingsWidget.ThumbnailSizesDropdown.setGeometry(132, 4, 128, 24)
-
-    #     # for x in AssetDownloader.ThumbnailSizes:
-    #     #     self.SettingsWidget.ThumbnailSizesDropdown.addItem(x)
-
-    #     #Icon resolution option
-    #     IconSizeOptionText = QtWidgets.QLabel(self.SettingsWidget)
-    #     IconSizeOptionText.setText("Icon resolution:")
-    #     IconSizeOptionText.setGeometry(4, 32, 128, 24)
-
-    #     self.SettingsWidget.IconSizesDropdown = QtWidgets.QComboBox(self.SettingsWidget)
-    #     self.SettingsWidget.IconSizesDropdown.setGeometry(132, 32, 128, 24)
-
-    #     # for x in AssetDownloader.IconSizes:
-    #     #     self.SettingsWidget.IconSizesDropdown.addItem(x)
-
-    #     self.SettingsWidget.IconSizesDropdown.setCurrentIndex(4)
-
-    #     #asset resolution option
-    #     AssetSizeOptionText = QtWidgets.QLabel(self.SettingsWidget)
-    #     AssetSizeOptionText.setText("Asset icon resolution:")
-    #     AssetSizeOptionText.setGeometry(4, 60, 128, 24)
-
-    #     self.SettingsWidget.AssetSizesDropdown = QtWidgets.QComboBox(self.SettingsWidget)
-    #     self.SettingsWidget.AssetSizesDropdown.setGeometry(132, 60, 128, 24)
-
-    #     # for x in AssetDownloader.AssetSizes:
-    #     #     self.SettingsWidget.AssetSizesDropdown.addItem(x)
-
-    #     self.SettingsWidget.AssetSizesDropdown.setCurrentIndex(18)
-
-    #     ApplyButton = QtWidgets.QPushButton(self.SettingsWidget)
-    #     ApplyButton.setText("Apply")
-    #     ApplyButton.setGeometry(540, 444, 96, 32)
-
-    #     ApplyButton.clicked.connect(self.ApplySettings)
-
-    # def ShowSettingsMenu(self):
-    #     self.SettingsWidget.show()
+    def ShowSettingsMenu(self):
+        self.DirectoryStringInput.setText(Dir)
+        # self.SaveInFolderOption.setChecked(SaveInFolder)
+        self.SettingsWidget.show()
 
     def AboutMenuInit(self):
         self.AboutWidget = QtWidgets.QWidget()
@@ -399,16 +394,16 @@ class MainWidget(QtWidgets.QMainWindow):
         Menubar = self.menuBar()
 
         #Tools Tab:
-        # SettingsAction = QtGui.QAction("&Settings", self)
-        # SettingsAction.setShortcut(QtGui.QKeySequence("Ctrl+S"))
-        # SettingsAction.triggered.connect(self.ShowSettingsMenu)
+        SettingsAction = QtGui.QAction("&Settings", self)
+        SettingsAction.setShortcut(QtGui.QKeySequence("Ctrl+S"))
+        SettingsAction.triggered.connect(self.ShowSettingsMenu)
 
         QuitAction = QtGui.QAction("&Quit", self)
         QuitAction.setShortcut(QtGui.QKeySequence("Ctrl+Q"))
         QuitAction.triggered.connect(self.close)
 
         ToolsMenu = Menubar.addMenu("&Tools")
-        # ToolsMenu.addAction(SettingsAction)
+        ToolsMenu.addAction(SettingsAction)
         ToolsMenu.addAction(QuitAction)
 
         #Help Tab:
