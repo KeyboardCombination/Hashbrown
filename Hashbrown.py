@@ -294,9 +294,9 @@ class MainWidget(QtWidgets.QMainWindow):
         self.SelectDirectoryButton.clicked.connect(self.SetDirectory)
         
         #Save asset in directory setting:
-        # self.SaveInFolderOption = QtWidgets.QCheckBox(self.SettingsWidget)
-        # self.SaveInFolderOption.setText("Download all versions")
-        # self.SaveInFolderOption.setGeometry(4, 64, 256, 24)
+        self.SaveInFolderOption = QtWidgets.QCheckBox(self.SettingsWidget)
+        self.SaveInFolderOption.setText("Save in folder")
+        self.SaveInFolderOption.setGeometry(4, 64, 256, 24)
 
         #Apply settings button:
         ApplyButton = QtWidgets.QPushButton(self.SettingsWidget)
@@ -307,8 +307,10 @@ class MainWidget(QtWidgets.QMainWindow):
     
     def ApplySettings(self):
         global Dir
+        global SaveInFolder
 
         Dir = self.DirectoryStringInput.text()
+        SaveInFolder = self.SaveInFolderOption.isChecked()
 
     def SetDirectory(self):
         SelectedDirectory = self.DirectoryInput.getExistingDirectory()
@@ -373,6 +375,7 @@ class MainWidget(QtWidgets.QMainWindow):
 
     def ShowSettingsMenu(self):
         self.DirectoryStringInput.setText(Dir)
+        self.SaveInFolderOption.setChecked(SaveInFolder)
         # self.SaveInFolderOption.setChecked(SaveInFolder)
         self.SettingsWidget.show()
 
