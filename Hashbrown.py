@@ -425,7 +425,7 @@ if (__name__ == "__main__"):
     Widget.show()
 
     #Font:
-    # QtGui.QFontDatabase.addApplicationFont("style/fonts/Rubik.ttf")
+    QtGui.QFontDatabase.addApplicationFont("style/fonts/Rubik.ttf")
 
     #Styling:
     Widget.setStyleSheet(open("style/style.qss").read())
