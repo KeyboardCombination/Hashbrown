@@ -237,7 +237,7 @@ class MainWidget(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Hashbrown")
-        self.setWindowIcon(QtGui.QIcon('icon/StudioIcon.png'))
+        self.setWindowIcon(QtGui.QIcon('icon/HashbrownLogo.png'))
         self.setFixedSize(640, 164)
 
         self.InitMainUI()
@@ -272,7 +272,7 @@ class MainWidget(QtWidgets.QMainWindow):
     def SettingsMenuInit(self):
         self.SettingsWidget = QtWidgets.QWidget()
         self.SettingsWidget.setWindowTitle("Settings")
-        self.SettingsWidget.setWindowIcon(QtGui.QIcon('icon/StudioIcon.png'))
+        self.SettingsWidget.setWindowIcon(QtGui.QIcon('icon/HashbrownLogo.png'))
         self.SettingsWidget.setFixedSize(640, 480)
         self.SettingsWidget.setStyleSheet(open("style/style.css").read())
 
