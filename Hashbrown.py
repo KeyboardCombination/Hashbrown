@@ -261,10 +261,10 @@ class MainWidget(QtWidgets.QMainWindow):
 
         self.DownloadAllVersions.clicked.connect(self.ToggleDownloadAllVersions)
 
-        DownloadButton = QtWidgets.QPushButton("Download", self)
-        DownloadButton.setGeometry(256, 96, 128, 32)
+        self.DownloadButton = QtWidgets.QPushButton("Download", self)
+        self.DownloadButton.setGeometry(256, 96, 128, 32)
 
-        DownloadButton.clicked.connect(self.InitializeDownload)
+        self.DownloadButton.clicked.connect(self.InitializeDownload)
         
         self.ProgressBar = QtWidgets.QProgressBar(self)
         self.ProgressBar.setGeometry(192, 132, 256, 24)
@@ -274,7 +274,7 @@ class MainWidget(QtWidgets.QMainWindow):
         self.SettingsWidget.setWindowTitle("Settings")
         self.SettingsWidget.setWindowIcon(QtGui.QIcon('icon/HashbrownLogo.png'))
         self.SettingsWidget.setFixedSize(640, 480)
-        self.SettingsWidget.setStyleSheet(open("style/style.css").read())
+        self.SettingsWidget.setStyleSheet(open("style/style.qss").read())
 
         #Directory setting:
         self.DirectoryInputText = QtWidgets.QLabel(self.SettingsWidget)
@@ -295,7 +295,7 @@ class MainWidget(QtWidgets.QMainWindow):
         
         #Save asset in directory setting:
         self.SaveInFolderOption = QtWidgets.QCheckBox(self.SettingsWidget)
-        self.SaveInFolderOption.setText("Save in folder")
+        self.SaveInFolderOption.setText("Save place in folder")
         self.SaveInFolderOption.setGeometry(4, 64, 256, 24)
 
         #Apply settings button:
@@ -383,7 +383,7 @@ class MainWidget(QtWidgets.QMainWindow):
         self.AboutWidget = QtWidgets.QWidget()
         self.AboutWidget.setWindowTitle("About")
         self.AboutWidget.setFixedSize(256, 64)
-        self.AboutWidget.setStyleSheet(open("style/style.css").read())
+        self.AboutWidget.setStyleSheet(open("style/style.qss").read())
 
         AboutText = QtWidgets.QLabel("KeyboardCombination 2022", alignment=QtCore.Qt.AlignCenter)
         AboutText.setGeometry(0, 0, 256, 64)
@@ -424,6 +424,10 @@ if (__name__ == "__main__"):
     Widget.resize(640, 480)
     Widget.show()
 
-    Widget.setStyleSheet(open("style/style.css").read())
+    #Font:
+    # QtGui.QFontDatabase.addApplicationFont("style/fonts/Rubik.ttf")
+
+    #Styling:
+    Widget.setStyleSheet(open("style/style.qss").read())
 
     sys.exit(HashbrownApp.exec())

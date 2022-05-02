@@ -15,6 +15,7 @@ QLabel {
 
 QCheckBox {
     color: #fafafa;
+    font: 10pt "Rubik";
 }
 
 QCheckBox::indicator {
@@ -41,6 +42,8 @@ QPushButton {
     color: #fafafa;
     border: 1px solid #424242;
     border-radius: 4px;
+    font: 12pt "Rubik";
+    font-weight: 500;
 }
 
 QPushButton:hover {
@@ -52,6 +55,7 @@ QLineEdit {
     color: #fafafa;
     border: 1px solid #424242;
     border-radius: 4px;
+    font: 10pt "Rubik";
 }
 
 QLineEdit:read-only {
@@ -71,6 +75,7 @@ QSpinBox {
     color: #fafafa;
     border: 1px solid #424242;
     border-radius: 4px;
+    font: 10pt "Rubik";
 }
 
 QSpinBox:disabled{
