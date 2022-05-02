@@ -11,6 +11,7 @@ QWidget {
 
 QLabel {
     color: #fafafa;
+    font: 10pt "Rubik";
 }
 
 QCheckBox {
