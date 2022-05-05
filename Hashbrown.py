@@ -324,17 +324,22 @@ class MainWidget(QtWidgets.QMainWindow):
         Quit = True
 
     def InitializeDownload(self):
-        # Widget.ProgressBar.setMaximum(0)
         if (self.AssetInput.text() == ""):
             QtWidgets.QMessageBox.critical(MainWidget(), "Error!", "Please enter an ID!")
             return
 
-        # self.AssetInput.setEnabled(False)
+        Process = None
+
+        Widget.ProgressBar.setMaximum(0)
+        Widget.AssetInput.setEnabled(False)
+        Widget.VersionInput.setEnabled(False)
+        Widget.DownloadButton.setEnabled(False)
+
         if (self.DownloadAllVersions.isChecked()):
             if (SaveInFolder):
-                subprocess.call(['python', 'rbxdl.py', 'single', f'{self.AssetInput.text()}', f'--allVer', f'--sdirs', f'--dir', Dir])
+                Process = subprocess.Popen(['python', 'rbxdl.py', 'single', f'{self.AssetInput.text()}', f'--allVer', f'--sdirs', f'--dir', Dir])
             else:
-                subprocess.call(['python', 'rbxdl.py', 'single', f'{self.AssetInput.text()}', f'--allVer', f'--dir', Dir])
+                Process = subprocess.Popen(['python', 'rbxdl.py', 'single', f'{self.AssetInput.text()}', f'--allVer', f'--dir', Dir])
             # maxVerId = requests.get(f'https://assetdelivery.roblox.com/v1/assetid/{self.AssetInput.text()}', headers = headersIn)
             # # print(maxVerId.json()['errors']) 
 
@@ -363,15 +368,21 @@ class MainWidget(QtWidgets.QMainWindow):
             #thread.quit()
         else:
             if (SaveInFolder):
-                subprocess.call(['python', 'rbxdl.py', 'single', f'{self.AssetInput.text()}', f'--ver', str(self.VersionInput.value()), f'--sdirs', f'--dir', Dir])
+                Process = subprocess.Popen(['python', 'rbxdl.py', 'single', f'{self.AssetInput.text()}', f'--ver', str(self.VersionInput.value()), f'--sdirs', f'--dir', Dir])
             else:
-                subprocess.call(['python', 'rbxdl.py', 'single', f'{self.AssetInput.text()}', f'--ver', str(self.VersionInput.value()), f'--dir', Dir])
+                Process = subprocess.Popen(['python', 'rbxdl.py', 'single', f'{self.AssetInput.text()}', f'--ver', str(self.VersionInput.value()), f'--dir', Dir])
 
             # future = pool.submit(AssetDownloader.DownloadAsset, self.AssetInput.text(), self.VersionInput.value())
             # x = threading.Thread(target=AssetDownloader.DownloadAsset, args=(self.AssetInput.text(), self.VersionInput.value()))
             # x.start()
-        # self.AssetInput.setEnabled(True)
-        # print("Download complete")
+        while (Process.poll() is None):
+            #Yield in loop
+            QtWidgets.QApplication.processEvents()
+        Widget.ProgressBar.setMaximum(100)
+        Widget.AssetInput.setEnabled(True)
+        Widget.VersionInput.setEnabled(True)
+        Widget.DownloadButton.setEnabled(True)
+        print("Download complete")
 
     def ShowSettingsMenu(self):
         self.DirectoryStringInput.setText(Dir)
