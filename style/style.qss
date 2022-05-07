@@ -131,11 +131,28 @@ QMenuBar {
 QMenuBar::item {
     background-color: transparent;
     color: #fafafa;
+    font: 10pt "Rubik";
 }
 
 QMenuBar::item:selected {
     background-color: #323232;
     color: #fafafa;
+}
+
+QMenu{
+    background-color: #212121;
+    color: #fafafa;
+    font: 10pt "Rubik";
+    margin: 2px;
+}
+
+QMenu::item{
+    border-radius: 2px;
+    padding: 4px;
+}
+
+QMenu::item:selected{
+    background-color: #323232;
 }
 
 QProgressBar {

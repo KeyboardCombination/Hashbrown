@@ -1,5 +1,7 @@
 import requests, argparse, time, os, random
 from ast import literal_eval
+from PySide6 import QtCore, QtWidgets, QtGui
+
 #Still have yet to find a way to reduce this... 
 astTypes = {
   0:['Unknown', ''],
@@ -115,14 +117,14 @@ def download(astId, astVer, args):
         if save == 1:
             print(f'Saved asset sucessfully!')
         else:
-            print(f'Save failed, Check logs for more info...')
+            raise Exception(f'Save failed, Check logs for more info...')
         return 1
     elif resp[0] == 404:
-        print('Could not download because asset was not found')
+        raise Exception('Could not download because asset was not found')
     elif resp[0] == 403:
-        print('Could not download because asset is copylocked')
+        raise Exception('Could not download because asset is copylocked')
     else:
-        print(f'Could not download due to {resp[0]}')
+        raise Exception(f'Could not download due to {resp[0]}')
     return 0
 #attempt to get every version of the asset
 def allVer(astId, args):
