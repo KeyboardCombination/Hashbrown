@@ -1,3 +1,2 @@
-![Hashbrown Logo](icon/HashbrownLogo.png)
-<img src="icon/HashbrownLogo.png" width="200" height="100">
+<img src="icon/HashbrownLogo.png" width="256" height="256">
 # Hashbrown
