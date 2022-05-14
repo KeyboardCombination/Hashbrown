@@ -5,6 +5,7 @@
 from asyncio import Future
 import sys
 from PySide6 import QtCore, QtWidgets, QtGui
+import PySide6
 import requests
 import re
 import os
@@ -67,22 +68,22 @@ class MainWidget(QtWidgets.QMainWindow):
         self.SettingsWidget = QtWidgets.QWidget()
         self.SettingsWidget.setWindowTitle("Settings")
         self.SettingsWidget.setWindowIcon(QtGui.QIcon('icon/HashbrownLogo.png'))
-        self.SettingsWidget.setFixedSize(640, 480)
+        self.SettingsWidget.setFixedSize(232, 104)
         self.SettingsWidget.setStyleSheet(open("style/style.qss").read())
 
         #Directory setting:
         self.DirectoryInputText = QtWidgets.QLabel(self.SettingsWidget)
-        self.DirectoryInputText.setText("Directory:")
-        self.DirectoryInputText.setGeometry(4, 6, 128, 16)
+        self.DirectoryInputText.setText("Directory: ")
+        self.DirectoryInputText.setGeometry(8, 8, 128, 16)
 
         self.DirectoryInput = QtWidgets.QFileDialog(self.SettingsWidget)
         self.DirectoryInput.setFileMode(QtWidgets.QFileDialog.FileMode.Directory)
 
         self.DirectoryStringInput = QtWidgets.QLineEdit(self.SettingsWidget)
-        self.DirectoryStringInput.setGeometry(64, 4, 128, 24)
+        self.DirectoryStringInput.setGeometry(72, 4, 128, 24)
 
         self.SelectDirectoryButton = QtWidgets.QPushButton(self.SettingsWidget)
-        self.SelectDirectoryButton.setGeometry(196, 4, 24, 24)
+        self.SelectDirectoryButton.setGeometry(204, 4, 24, 24)
         self.SelectDirectoryButton.setText("...")
 
         self.SelectDirectoryButton.clicked.connect(self.SetDirectory)
@@ -90,12 +91,12 @@ class MainWidget(QtWidgets.QMainWindow):
         #Save asset in directory setting:
         self.SaveInFolderOption = QtWidgets.QCheckBox(self.SettingsWidget)
         self.SaveInFolderOption.setText("Save place in folder")
-        self.SaveInFolderOption.setGeometry(4, 64, 256, 24)
+        self.SaveInFolderOption.setGeometry(49, 32, 134, 24)
 
         #Apply settings button:
         ApplyButton = QtWidgets.QPushButton(self.SettingsWidget)
         ApplyButton.setText("Apply")
-        ApplyButton.setGeometry(540, 444, 96, 32)
+        ApplyButton.setGeometry(68, 64, 96, 32)
 
         ApplyButton.clicked.connect(self.ApplySettings)
     
@@ -160,11 +161,27 @@ class MainWidget(QtWidgets.QMainWindow):
     def AboutMenuInit(self):
         self.AboutWidget = QtWidgets.QWidget()
         self.AboutWidget.setWindowTitle("About")
-        self.AboutWidget.setFixedSize(256, 64)
+        self.AboutWidget.setFixedSize(256, 142)
+        self.AboutWidget.setWindowIcon(QtGui.QIcon('icon/HashbrownLogo.png'))
         self.AboutWidget.setStyleSheet(open("style/style.qss").read())
 
+        #Create an image of the Hashbrown logo:
+        self.Logo = QtWidgets.QLabel(self.AboutWidget, alignment=QtCore.Qt.AlignCenter)
+        self.Logo.setGeometry(0, 0, 256, 96)
+        
+        #Create pixmap of the logo:
+        self.LogoImage = QtGui.QImage("icon/HashbrownLogo.png")
+        self.LogoPixmap = QtGui.QPixmap(self.LogoImage.scaled(96, 96, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation))
+
+        self.Logo.setPixmap(self.LogoPixmap)
+
+        ProgramName = QtWidgets.QLabel("Hashbrown", alignment=QtCore.Qt.AlignCenter)
+        ProgramName.setGeometry(0, 96, 256, 16)
+        ProgramName.setParent(self.AboutWidget)
+        ProgramName.setStyleSheet("font-weight: 500; font-size: 16px;")
+
         AboutText = QtWidgets.QLabel("KeyboardCombination 2022", alignment=QtCore.Qt.AlignCenter)
-        AboutText.setGeometry(0, 0, 256, 64)
+        AboutText.setGeometry(0, 120, 256, 16)
         AboutText.setParent(self.AboutWidget)
 
     def ShowAboutMenu(self):
