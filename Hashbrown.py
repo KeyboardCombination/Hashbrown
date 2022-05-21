@@ -2,24 +2,9 @@
 # rbxdl by Modnark
 
 # Init:
-from asyncio import Future
 import sys
 from PySide6 import QtCore, QtWidgets, QtGui
-import PySide6
-import requests
-import re
-import os
-import time
-import json
-import concurrent.futures
 import subprocess
-
-# Global Variables:
-# headersIn = {'User-Agent': 'Roblox/WinINet'}
-# assetUrl = "https://assetdelivery.roblox.com/v1/asset/?id="
-# CanDownloadMetadata = True
-
-# Quit = False
 
 # Config:
 Dir = "Downloaded"
