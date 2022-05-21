@@ -1,5 +1,5 @@
 # Hashbrown by KeyboardCombination 2022
-# Original downloader by Lannuked
+# rbxdl by Modnark
 
 # Init:
 from asyncio import Future
